@@ -1,0 +1,49 @@
+
+Version 8.1 over 8.0
+introduced separate defines SBM_RUMB for pair umbrellas (broken),
+and SBM for all other potential mods.
+added pair type for tanh umbrellas
+changed all dual potentials to type 7, cont ang & dih
+made fix in bondfree.c in pair_umbrella(), initializing Q_local to 0.0
+fixed AdaptTempering.h to include gmxmpi.h instead of mpi.h
+copied all modified files back over into Patch/ tree, including:
+legacymodules.c, with added g_kuh
+txtdump.c, fixed to recognize SBM types
+
+
+Update:
+Version 7.0
+Added SBM dual-angle and SBM dual-dihedral;
+
+Version 6.0
+Adding in g_kuh
+
+Version 5.0
+Reverse the modification of V2.0 but keep the change of V3.0 and V4.0, because I want to highlight the effect of adaptive average;
+Add line 	   
+do_ene = (do_per_step(step, ir->nstenergy) || bLastStep);
+in front of 	    
+print_ebin(outf->fp_ene, do_ene, do_dr, do_or, do_log ? fplog : NULL,
+	  step, t,
+	  eprNORMAL, bCompact, mdebin, fcd, groups, &(ir->opts));
+
+This is for making sure the output frequency of energy file follows nstenergy.
+
+
+Version 4.0
+This version includes the latest change by ZTW, such as the new implementation of MTSEED.
+
+Version 3.0
+Change the dt from mb->lgv_dt * BOLTZ to just mb->lgv_dt, thus giving faster integration for Langevin Equation;
+Change the line in function mb_lrbal(): from "if (fabs(s0[0] + s0[1]) < 1e-3)" to "if (fabs(s0[0] + s0[1]) < 1e-6)", in this way we allows the maximum ensemble_factor;
+
+
+Version 2.0
+Change the array of mb->ampf into a two-dimension array with mb->n * mb->m;
+Function mb_normalize() scales specifically in each bin j for estimation of beta_i;
+DID NOT Flush the memory to TRACE file more frequently, for keeping the speed of simulation (turn off the function fflush())
+
+
+Version 1.0
+Change some code for the estimation of energy, so that it is consistent with what is written in the paper;
+
